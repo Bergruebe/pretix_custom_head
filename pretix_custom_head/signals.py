@@ -2,7 +2,7 @@ from django.dispatch import receiver
 from pretix.presale.signals import html_head
 from django.utils.safestring import mark_safe
 import requests
-from pretix.presale.signals import order_complete
+from pretix.base.signals import order_placed
 
 # Code in <head> injizieren
 @receiver(html_head)
@@ -15,7 +15,7 @@ def inject_head_code(sender, request, **kwargs):
     return ""
 
 # Ticket-Kauf tracken
-@receiver(order_complete)
+@receiver(order_placed)
 def track_order(sender, order, **kwargs):
     event = sender
     plausible_url = event.settings.get("plausible_url")

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pretix-custom-head",
-    version="0.1.2",
+    version="0.1.3",
     description="A Pretix plugin to inject custom code into the <head> section and track events using Plausible Analytics.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -27,7 +27,7 @@ setup(
     ],
     entry_points={
         "pretix.plugin": [
-            "pretix_custom_head = pretix_custom_head:PretixPluginMeta",
+            "pretix-custom-head = pretix-custom-head:PretixPluginMeta",
         ],
     },
 )

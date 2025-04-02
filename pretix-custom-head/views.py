@@ -24,4 +24,4 @@ def head_tracking_settings(request, event):
             "plausible_domain": event.settings.plausible_domain,
         })
 
-    return render(request, "pretix_custom_head/settings.html", {"form": form, "event": event})
+    return render(request, "pretix-custom-head/settings.html", {"form": form, "event": event})

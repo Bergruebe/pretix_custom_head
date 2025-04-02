@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pretix-custom-head"
-version = "0.1.2"
+dynamic = ["version"]
 description = "A Pretix plugin to inject custom code into the <head> section and track events using Plausible Analytics."
 readme = "README.md"
 license = { text = "MIT License" }
@@ -25,3 +25,6 @@ classifiers = [
 
 [project.urls]
 homepage = "https://github.com/bergruebe/pretix-custom-head"
+
+[tool.setuptools.dynamic]
+version = {attr = "pretix-custom-head.__version__"}

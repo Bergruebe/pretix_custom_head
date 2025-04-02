@@ -1,1 +1,1 @@
-default_app_config = "pretix_custom_head.apps.PluginApp"
+__version__ = "0.1.3"

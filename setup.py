@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="pretix-custom-head",
-    version="0.1.3",
+    name="pretix_custom_head",
+    version="0.1.4",
     description="A Pretix plugin to inject custom code into the <head> section and track events using Plausible Analytics.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="Bergruebe",
     author_email="68869895+Bergruebe@users.noreply.github.com",
-    url="https://github.com/bergruebe/pretix-custom-head",
+    url="https://github.com/bergruebe/pretix_custom_head",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -27,7 +27,7 @@ setup(
     ],
     entry_points={
         "pretix.plugin": [
-            "pretix-custom-head = pretix-custom-head:PretixPluginMeta",
+            "pretix_custom_head = pretix_custom_head:PretixPluginMeta",
         ],
     },
 )

@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pretix-custom-head"
+name = "pretix_custom_head"
 dynamic = ["version"]
 description = "A Pretix plugin to inject custom code into the <head> section and track events using Plausible Analytics."
 readme = "README.md"
@@ -24,7 +24,7 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "https://github.com/bergruebe/pretix-custom-head"
+homepage = "https://github.com/bergruebe/pretix_custom_head"
 
 [tool.setuptools.dynamic]
-version = {attr = "pretix-custom-head.__version__"}
+version = {attr = "pretix_custom_head.__version__"}

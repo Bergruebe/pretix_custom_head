@@ -5,7 +5,7 @@ from . import __version__
 
 
 class PluginApp(PluginConfig):
-    name = "pretix-custom-head"
+    name = "pretix_custom_head"
     verbose_name = _("Custom Head Injection & Plausible Tracking")
 
     class PretixPluginMeta:

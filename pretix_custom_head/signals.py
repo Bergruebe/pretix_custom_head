@@ -1,8 +1,9 @@
 from django.dispatch import receiver
 from pretix.presale.signals import html_head
 from django.utils.safestring import mark_safe
+from django import forms
 import requests
-from pretix.base.signals import order_placed
+from pretix.base.signals import order_placed, register_global_settings
 
 # Code in <head> injizieren
 @receiver(html_head)
@@ -36,3 +37,21 @@ def track_order(sender, order, **kwargs):
             requests.post(f"{plausible_url}/api/event", json=payload, timeout=3)
         except requests.exceptions.RequestException as e:
             print(f"Plausible Tracking Error: {e}")
+
+@receiver(register_global_settings, dispatch_uid="pretix_custom_head_global_settings")
+def register_global_settings(sender, **kwargs):
+    return {
+        "custom_head_code": forms.CharField(
+            widget=forms.Textarea,
+            required=False,
+            label="Custom Head Code"
+        ),
+        "plausible_url": forms.URLField(
+            required=False,
+            label="Plausible Analytics URL"
+        ),
+        "plausible_domain": forms.CharField(
+            required=False,
+            label="Plausible Analytics Domain"
+        ),
+    }

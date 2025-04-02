@@ -9,7 +9,7 @@ class PluginApp(PluginConfig):
     verbose_name = _("Custom Head Injection & Plausible Tracking")
 
     class PretixPluginMeta:
-        name = _("Custom Head Injection & Plausible Tracking")
+        name = _("Custom html head injection & Plausible Tracking")
         author = "Bergruebe"
         description = _("Fügt beliebigen Code in den <head> ein und trackt Bestellungen mit Plausible Analytics.")
         visible = True

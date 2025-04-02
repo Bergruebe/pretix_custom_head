@@ -11,7 +11,7 @@ class PluginApp(PluginConfig):
         author = "Bergruebe"
         description = _("Fügt beliebigen Code in den <head> ein und trackt Bestellungen mit Plausible Analytics.")
         visible = True
-        version = "1.0.0"
+        version = "0.1.1"
         compatibility = "pretix>=4.0.0"
 
 default_app_config = "pretix_custom_head.PluginApp"

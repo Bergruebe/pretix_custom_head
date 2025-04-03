@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from pretix.base.plugins import PluginConfig
+from pretix.helpers.config import config
 
 from . import __version__
 
@@ -17,10 +18,9 @@ class PluginApp(PluginConfig):
         compatibility = "pretix>=4.0.0"
 
     def ready(self):
-        from pretix.base.settings import settings as pretix_settings
-        plausible_url = pretix_settings.get("plausible_url")
+        plausible_url = config.get("custom_head", "plausible_url", fallback=None)
         if plausible_url:
-            from django.conf import settings
+            from django.conf import settings as django_settings
             # Add Plausible Analytics domain to CSP settings
-            settings.CSP_SCRIPT_SRC += (plausible_url,)
+            django_settings.CSP_SCRIPT_SRC += (plausible_url,)
         from . import signals  # noqa

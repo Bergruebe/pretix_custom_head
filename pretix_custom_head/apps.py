@@ -20,5 +20,5 @@ class PluginApp(PluginConfig):
         plausible_url = settings.CONFIG_FILE.get("custom_head", "plausible_url", fallback=None)
         if plausible_url:
             # Add Plausible Analytics domain to CSP settings
-            django_settings.CSP_SCRIPT_SRC += (plausible_url,)
+            settings.CSP_SCRIPT_SRC += (plausible_url,)
         from . import signals  # noqa

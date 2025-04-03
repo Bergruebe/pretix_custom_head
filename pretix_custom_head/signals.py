@@ -12,7 +12,7 @@ def inject_head_code(sender, request, **kwargs):
     custom_code = event.settings.get("custom_head_code")
 
     if custom_code:
-        return "\n".join(custom_code)
+        return str(custom_code)
     return ""
 
 # Ticket-Kauf tracken

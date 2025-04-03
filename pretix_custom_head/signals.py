@@ -3,6 +3,7 @@ from pretix.presale.signals import html_head
 from django.utils.safestring import mark_safe
 from django import forms
 import requests
+import secrets
 from pretix.base.signals import order_placed, register_global_settings
 
 # Code in <head> injizieren
@@ -12,9 +13,8 @@ def inject_head_code(sender, request, **kwargs):
     custom_code = event.settings.get("custom_head_code")
 
     if custom_code:
-        nonce = request.csp_nonce
-        custom_code = custom_code.replace("<script", f'<script nonce="{nonce}"')
-        return str(custom_code)
+        csp = mark_safe(f'<meta http-equiv="Content-Security-Policy" content="script-src \'self\' { event.settings.get("plausible_url") }">')
+        return str(csp + '\n' + custom_code)
     return ""
 
 # Ticket-Kauf tracken

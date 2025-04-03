@@ -12,6 +12,8 @@ def inject_head_code(sender, request, **kwargs):
     custom_code = event.settings.get("custom_head_code")
 
     if custom_code:
+        nonce = request.csp_nonce
+        custom_code = custom_code.replace("<script", f'<script nonce="{nonce}"')
         return str(custom_code)
     return ""
 

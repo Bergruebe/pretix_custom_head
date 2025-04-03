@@ -13,8 +13,7 @@ def inject_head_code(sender, request, **kwargs):
     custom_code = event.settings.get("custom_head_code")
 
     if custom_code:
-        csp = mark_safe(f'<meta http-equiv="Content-Security-Policy" content="script-src \'self\' { event.settings.get("plausible_url") }">')
-        return str(csp + '\n' + custom_code)
+        return str('\n' + custom_code)
     return ""
 
 # Ticket-Kauf tracken

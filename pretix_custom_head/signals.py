@@ -6,13 +6,13 @@ import requests
 from pretix.base.signals import order_placed, register_global_settings
 
 # Code in <head> injizieren
-@receiver(html_head)
+@receiver(html_head, dispatch_uid="custom_head_html")
 def inject_head_code(sender, request, **kwargs):
     event = sender
     custom_code = event.settings.get("custom_head_code")
 
     if custom_code:
-        return mark_safe(custom_code)
+        return [mark_safe(custom_code)]
     return ""
 
 # Ticket-Kauf tracken
@@ -25,12 +25,11 @@ def track_order(sender, order, **kwargs):
     if plausible_url and plausible_domain:
         payload = {
             "name": "Ticket Purchase",
-            "url": f"https://{plausible_domain}/checkout",
+            "url": f"https://{plausible_domain}/{event.event.organizer.slug}/{event.event.slug}/checkout",
             "domain": plausible_domain,
-            "props": {
-                "order_code": order.code,
-                "value": str(order.total),
-                "currency": order.currency
+            "revenue": {
+                "amount": str(order.total),
+                "currency": event.event.currency
             }
         }
         try:

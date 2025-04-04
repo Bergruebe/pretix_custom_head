@@ -1,20 +1,45 @@
 from django.dispatch import receiver
-from pretix.presale.signals import html_head
+from pretix.presale.signals import html_head, process_response
 from django.utils.safestring import mark_safe
 from django import forms
 import requests
 import secrets
 from pretix.base.signals import order_placed, register_global_settings
+from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 
 # Code in <head> injizieren
 @receiver(html_head, dispatch_uid="custom_head_html")
 def inject_head_code(sender, request, **kwargs):
     event = sender
     custom_code = event.settings.get("custom_head_code")
+    request.custom_code_noce = secrets.token_urlsafe()
+    custom_code = str(custom_code).replace('<script', f'<script nonce="{ request.custom_code_noce }"')
 
     if custom_code:
+        request.custom_code_output_content = True
         return str('\n' + custom_code)
     return ""
+
+@receiver(process_response, dispatch_uid="custom_code_process_response")
+def process_response_signal(sender, request, response, **kwargs):
+    if not getattr(request, "custom_code_output_content", None):
+        return response
+    if "Content-Security-Policy" in response:
+        headers = _parse_csp(response["Content-Security-Policy"])
+    else:
+        headers = {}
+
+    _merge_csp(
+        headers,
+        {
+            "script-src": [f"'nonce-{request.tracking_scripts_nonce}'", sender.settings.get("plausible_url")],
+            "style-src": [f"'nonce-{request.tracking_scripts_nonce}'"],
+        },
+    )
+    if headers:
+        response["Content-Security-Policy"] = _render_csp(headers)
+
+    return response
 
 # Ticket-Kauf tracken
 @receiver(order_placed)

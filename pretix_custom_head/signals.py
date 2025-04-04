@@ -12,8 +12,8 @@ from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
 def inject_head_code(sender, request, **kwargs):
     event = sender
     custom_code = event.settings.get("custom_head_code")
-    request.custom_code_noce = secrets.token_urlsafe()
-    custom_code = str(custom_code).replace('<script', f'<script nonce="{ request.custom_code_noce }"')
+    request.custom_code_nonce = secrets.token_urlsafe()
+    custom_code = str(custom_code).replace('<script', f'<script nonce="{ request.custom_code_nonce }"')
 
     if custom_code:
         request.custom_code_output_content = True
@@ -32,8 +32,8 @@ def process_response_signal(sender, request, response, **kwargs):
     _merge_csp(
         headers,
         {
-            "script-src": [f"'nonce-{request.tracking_scripts_nonce}'", sender.settings.get("plausible_url")],
-            "style-src": [f"'nonce-{request.tracking_scripts_nonce}'"],
+            "script-src": [f"'nonce-{request.custom_code_nonce}'", sender.settings.get("plausible_url")],
+            "style-src": [f"'nonce-{request.custom_code_nonce}'"],
         },
     )
     if headers:
